@@ -1,0 +1,134 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>New Page</title><link rel="stylesheet" href="assets.style.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/><style>.menuPanel {
+            width: 60%;
+            height: 60%;
+            background-color: rgb(195, 128, 57); 
+            border-radius: 17px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            display: flex;
+            opacity: 0.7;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3), 
+                0 0 25px rgba(0, 0, 0, 0.2), 
+                0 0 35px rgba(0, 0, 255, 0.1);
+        }
+        .sidePanel {
+            width: 30%;
+            height: 100%;
+            background-color: rgba(118, 73, 25, 0.757);
+            border-radius: 17px 0 0 17px;
+            position: relative; /* Correcting the position property */
+        }
+        .buttonPanel{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-left: 10%;
+            background: transparent;
+        }
+        .sidePanelText{
+            font-family: "Trebuchet MS", sans-serif;
+            margin-left: 12%;
+            padding-top: 5%;
+            font-weight: bold;
+            color: #eda34a;
+            font-size: 120%;
+        }
+        .scrollable-container {
+            width: 100%; /* Set width of the scrollable area */
+            height: 100%; /* Set height of the scrollable area */
+            overflow-y: scroll; /* Enable vertical scrollbar */
+            border: 1px solid #8d1e1e; /* Optional: Add a border for visibility */
+            padding: 10px; /* Optional: Add padding inside the scrollable area */
+        }
+        .rightSidePanelRow {
+            display: flex;
+            padding: 10px;
+            border-radius: 0 17px 17px 0;
+            flex-direction: column;
+            width: 100%;
+            height: 90%;
+            overflow: hidden; /* Ensure no overflow on the parent container */
+        }
+        .rightSidePanelColumn{
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 0 17PX 17PX 0;
+            flex-direction: column;
+        }
+        .exmpanationArea {
+            display: flex;
+            justify-content: center; /* Centers children horizontally */
+            align-items: center; /* Centers children vertically */
+            height: auto;
+            width: 80%;
+            padding: 10px;
+            border-radius: 17px;
+            background-color: #d7a364;
+            margin: 20px auto; /* Centers container horizontally and adds vertical spacing */
+        }
+
+        .search{
+            --padding: 14px;
+            width: 60%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: var(--padding);
+            border-radius: 28px;
+            background-color: #f6f6f6;
+            height: 0%;
+            margin-left: 100px;
+        }
+        .searchInput{
+            font-size: 16px;
+            font-family: "Trebuchet MS", sans-serif;
+            color: #333333;
+            margin-left: var(--padding);
+            outline: none;
+            border: none;
+            background: transparent;
+            flex: 1;
+        }
+        .searchInput::placeholder,
+        .searchIcon{
+            color: rgb(0, 0, 0, 0.25)
+        }
+        .scrollbar {
+            flex-grow: 1; /* Allow it to take up remaining space */
+            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-x: hidden; /* Disable horizontal scrolling */
+            flex-direction: column; /* Ensure items are stacked vertically */
+            justify-content: center;
+        }
+        .groupAreas {
+            display: flex;
+            height: auto;
+            padding: 10px; /* Added padding for better spacing */
+            border-radius: 17px;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            margin: 10px 0; /* Added margin for spacing between items */
+        }
+        .groupText {
+            font-size: 15px;
+            font-family: "Trebuchet MS", sans-serif;
+            color: #77470d;
+            background: transparent;
+        }
+        a:link{
+            text-decoration: none;
+        }
+        .groupCard{
+            margin: 1%;
+            border-radius: 17px;
+            background-color: #d7a364;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 50%;
+            width: 50%;
+        }</style></head><body style="background-color: rgb(246, 200, 143);"><div id="menuContainer" class="menuPanel"><div id="sideContainer" class="sidePanel"><div id="spacer" style="height: 15%; width: 100%; background-color: transparent;"></div><a href="HomePage.html" id="homePageNavigator"><div class="buttonPanel"><i class="fa-solid fa-house" style="color: #eda34a; font-size: 220%;"></i><p class="sidePanelText">HOME</p></div></a><a href="GroupsPage.html" id="groupPageNavigator"><div class="buttonPanel"><i class="fa-solid fa-user-group" style="color: #eda34a; font-size: 220%;"></i><p class="sidePanelText">GROUPS</p></div></a><a href="SettingsPage.html" id="settingsPageNavigator"><div class="buttonPanel"><i class="fa-solid fa-gear" style="color: #eda34a; font-size: 220%;"></i><p class="sidePanelText">SETTINGS</p></div></a></div><div id="GroupPagePanel" , class="rightSidePanelRow"><form><div class="search"><i class="searchIcon fa-solid fa-magnifying-glass"></i> <input class="searchInput" type="search" name="" id="" placeholder="Search"></div></form><div id="creatingGroupPanels" class="scrollbar"><a href="IndividualGroup.html"><div class="groupAreas"><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div></div></a><a href="IndividualGroup.html"><div class="groupAreas"><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div></div></a><a href="IndividualGroup.html"><div class="groupAreas"><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div></div></a><a href="IndividualGroup.html"><div class="groupAreas"><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div><div class="groupCard"><p class="groupText" style="font-weight: 900">GROUP A</p><p class="groupText">John<br>stacy<br>Oistin</p></div></div></a></div></div></div><script src="Groups.bundle.js"></script></body></html>
