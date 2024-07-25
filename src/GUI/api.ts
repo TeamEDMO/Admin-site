@@ -28,7 +28,7 @@ export async function fetchGroups() {
 }
 
 export interface GroupInfo {
-    robotName: string;
+    robotID: string;
     players: { name: string; helpRequested: boolean }[]
 }
 export async function fetchGroupInfo(robotName: string) {
@@ -36,7 +36,7 @@ export async function fetchGroupInfo(robotName: string) {
 
     if (!data) {
         const sampleUser: GroupInfo = {
-            robotName: `${robotName} (Not active)`,
+            robotID: `${robotName} (Not active)`,
             players: []
         };
         return sampleUser;

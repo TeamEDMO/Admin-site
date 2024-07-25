@@ -28,7 +28,7 @@ function updateGroupInformation() {
         return;
     }
 
-    pageHeader.innerHTML = groupInfo.robotName;
+    pageHeader.innerHTML = groupInfo.robotID;
 
     if (groupInfo.players.length == 0) {
         userNames.innerHTML = "No players are here";
