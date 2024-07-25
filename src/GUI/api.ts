@@ -14,7 +14,7 @@ async function fetchData(endpoint: string, options = {}) {
     }
 }
 // Retrieve user data from the server
-export async function fetchUserData(): Promise<any> {
+export async function fetchGroups(): Promise<any> {
     return await fetchData(relativeURLWithPort("activeSessions", "8080"));
 }
 export function getQueryParam(param: string): string | null {

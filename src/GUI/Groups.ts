@@ -1,14 +1,12 @@
 // Generate dynamically group panels in the GroupsPage.html
-import { fetchUserData } from './api';
-
-
+import { fetchGroups } from './api';
 
 async function updateGroups() {
     console.log("I'm in functions");
     const contentDiv = document.getElementById('creatingGroupPanels');
 
     if (contentDiv) {
-        const users: { robotID: string; names: string[] }[] = await fetchUserData(); // Fetch user data
+        const users: { robotID: string; names: string[] }[] = await fetchGroups(); // Fetch user data
         if (users.length === 0) {
             console.error('No users found or error fetching users.');
             return;
@@ -17,7 +15,7 @@ async function updateGroups() {
         var newChildren : Node[] = []
 
         // Loop through all the groups 0 - n
-        users.forEach((user: { robotID: string; names: string[] }) => {
+        users.forEach((user) => {
             const groupCard = document.createElement('a');
             groupCard.classList.add('card', "groupCard");
             groupCard.id = user.robotID;
@@ -41,8 +39,6 @@ async function updateGroups() {
         console.error('Element with ID "creatingGroupPanels" not found.');
     }
 }
-
-
 
 updateGroups();
 setInterval(updateGroups, 5000);

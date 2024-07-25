@@ -1,6 +1,6 @@
 import { sources } from 'webpack';
 import { getQueryParam } from './api'; 
-import { fetchUserData } from './api'; 
+import { fetchGroups } from './api'; 
 import { updateContent } from './ImportHelpOptions'; 
 import {createTasks} from './ImportTasks'; 
 const robotID = getQueryParam('robotID');
@@ -10,7 +10,7 @@ const helpAmount = document.getElementById("helpText");
 let intervalID: NodeJS.Timeout;
 
 async function getUserByRobotID(robotID: string) {
-    const users: { robotID: string; names: string[] }[] = await fetchUserData(); // Assuming fetchUserData() returns the users array
+    const users: { robotID: string; names: string[] }[] = await fetchGroups(); // Assuming fetchUserData() returns the users array
     const user = users.find(user => user.robotID.toLowerCase() === robotID.toLowerCase());
     return user;
 }
