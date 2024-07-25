@@ -146,15 +146,11 @@ div.wrapContainer {
     gap: 1.5em;
 }
 
-div.groupCard {
+.groupCard {
     flex-direction: column;
     flex: 1;
     justify-content: center;
     align-items: center;
-}
-
-a.groupLink {
-    flex-grow: 1;
     display: flex;
     color: var(--baseTextColor);
     text-decoration: none;

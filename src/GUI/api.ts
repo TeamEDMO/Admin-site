@@ -1,5 +1,5 @@
 // Receive data from the server
-async function fetchData(endpoint:string, options = {}) {
+async function fetchData(endpoint: string, options = {}) {
     try {
         const response = await fetch(endpoint, options);
         if (!response.ok) {
@@ -15,10 +15,14 @@ async function fetchData(endpoint:string, options = {}) {
 }
 // Retrieve user data from the server
 export async function fetchUserData(): Promise<any> {
-    return await fetchData('assets/testUsers.json');
+    return await fetchData(relativeURLWithPort("activeSessions", "8080"));
 }
 export function getQueryParam(param: string): string | null {
     const urlParams = new URLSearchParams(window.location.search);
     console.log(urlParams);
     return urlParams.get(param);
+}
+
+export function relativeURLWithPort(relativeURLFromRoot: string, port: string) {
+    return `${window.location.protocol}//${window.location.hostname}:${port}/${relativeURLFromRoot}`;
 }
