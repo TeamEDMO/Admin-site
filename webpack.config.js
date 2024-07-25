@@ -6,7 +6,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: {
-        index: './src/index.ts',
         Groups: './src/GUI/Groups.ts',
         HelpOptions: './src/GUI/ImportHelpOptions.ts',
         IndividualGroup: './src/GUI/IndividualGroup.ts'
@@ -40,22 +39,21 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             filename: 'index.html',
-            chunks: ['index']
         }),
         new HtmlWebpackPlugin({
             template: './src/GroupsPage.html',
             filename: 'GroupsPage.html',
-            chunks: ['GroupsPage']
+            chunks: ['GroupsPage'],
         }),
         new HtmlWebpackPlugin({
             template: './src/SettingsPage.html',
             filename: 'SettingsPage.html',
-            chunks: ['SettingsPage']
+            chunks: ['SettingsPage'],
         }),
         new HtmlWebpackPlugin({
             template: './src/IndividualGroup.html',
             filename: 'IndividualGroup.html',
-            chunks: ['IndividualGroup']
+            chunks: ['IndividualGroup'],
         }),
         new CopyPlugin({
             patterns: [
