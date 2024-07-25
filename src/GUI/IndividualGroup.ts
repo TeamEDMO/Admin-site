@@ -1,4 +1,3 @@
-import { sources } from 'webpack';
 import { fetchGroupInfo, getQueryParam, GroupInfo } from './api';
 import { updateContent } from './ImportHelpOptions';
 const robotID = getQueryParam('robotID');
@@ -144,7 +143,7 @@ function loadCompletedTasks() {
 
 //#endregion
 
-//#HelpRegion
+//#region help
 
 async function loadHelpSection(firstLoad: boolean) {
     if (firstLoad) {
@@ -215,6 +214,6 @@ function updateHelpState() {
     else
         hideHelpSection();
 }
-
+//#endregion
 
 updateGroupInfo(true);

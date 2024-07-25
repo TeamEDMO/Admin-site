@@ -87,10 +87,6 @@ function createTextArea(container: HTMLElement) {
     const div = document.createElement('div');
     div.classList.add('helpInputContainer');
 
-    let spacer = document.createElement('div');
-    spacer.style.flexGrow = '1';
-    let spacer2 = spacer.cloneNode(true);
-
     const textBox = document.createElement('div');
     textBox.classList.add("textBox");
 
@@ -101,8 +97,6 @@ function createTextArea(container: HTMLElement) {
     textArea.placeholder = "type personalized help here...";
     textBox.appendChild(textArea);
 
-
-
     const sendButton = document.createElement('i');
     sendButton.classList.add("textBoxIcon", "fa-solid", "fa-plus");
     addSendButtonListener(sendButton, textArea);
@@ -110,7 +104,6 @@ function createTextArea(container: HTMLElement) {
 
     const gap = document.createElement('div');
     gap.style.padding = "1%";
-
 
     div.appendChild(textBox);
     container.appendChild(div);
