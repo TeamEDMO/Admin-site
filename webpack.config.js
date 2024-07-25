@@ -7,8 +7,8 @@ module.exports = {
     mode: 'development',
     entry: {
         index: './src/index.ts',
-        ImportTasks: './src/GUI/ImportTasks.ts', 
-        Groups: './src/GUI/Groups.ts', 
+        ImportTasks: './src/GUI/ImportTasks.ts',
+        Groups: './src/GUI/Groups.ts',
         HelpOptions: './src/GUI/ImportHelpOptions.ts',
         IndividualGroup: './src/GUI/IndividualGroup.ts'
     },
@@ -29,7 +29,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
             },
         ],
@@ -46,12 +46,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/GroupsPage.html',
             filename: 'GroupsPage.html',
-            chunks: ['GroupsPage'] 
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/HomePage.html',
-            filename: 'HomePage.html',
-            chunks: ['HomePage']
+            chunks: ['GroupsPage']
         }),
         new HtmlWebpackPlugin({
             template: './src/SettingsPage.html',

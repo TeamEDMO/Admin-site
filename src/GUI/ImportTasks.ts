@@ -16,8 +16,7 @@ export async function createTasks() {
             if (contentDiv) {
                 loadTasksFromLocalStorage();
                 contentDiv.innerHTML = ''; //Clear all content in the container 
-                const Headline = document.createElement('h1'); //Create the headline for the container 
-                Headline.classList.add('boxHeaders'); 
+                const Headline = document.createElement('h2'); //Create the headline for the container 
                 Headline.textContent="Task List";
       
                 contentDiv.appendChild(Headline);

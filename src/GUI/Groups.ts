@@ -26,7 +26,7 @@ async function updateContentWrap() {
 
                 const groupPanel = document.createElement('div'); // Row panel that holds up to two groups
                 groupPanel.id = user.robotID;
-                groupPanel.classList.add('groupCard');
+                groupPanel.classList.add('card', "groupCard");
             
                 const robotID = document.createElement('h1');
                 robotID.classList.add('robotIDHeader');
