@@ -10,13 +10,40 @@ async function fetchData(endpoint: string, options = {}) {
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
-        return [];
+        return null;
     }
 }
-// Retrieve user data from the server
-export async function fetchGroups(): Promise<any> {
-    return await fetchData(relativeURLWithPort("activeSessions", "8080"));
+export interface GroupSummary {
+    robotID: string;
+    names: string[];
 }
+// Retrieve user data from the server
+export async function fetchGroups() {
+    const data: GroupSummary[] | null = await fetchData(relativeURLWithPort(`activeSessions`, "8080"));
+
+    if (!data)
+        return [];
+
+    return data;
+}
+
+export interface GroupInfo {
+    robotName: string;
+    players: { name: string; helpRequested: boolean }[]
+}
+export async function fetchGroupInfo(robotName: string) {
+    const data: GroupInfo | null = await fetchData(relativeURLWithPort(`sessions/${robotName}`, "8080"));
+
+    if (!data) {
+        const sampleUser: GroupInfo = {
+            robotName: `${robotName} (Not active)`,
+            players: []
+        };
+        return sampleUser;
+    }
+    return data;
+}
+
 export function getQueryParam(param: string): string | null {
     const urlParams = new URLSearchParams(window.location.search);
     console.log(urlParams);
