@@ -15,7 +15,7 @@
 body {
     background-color: var(--backgroundColor);
     display: flex;
-    height: 100vh;
+    height: 100dvh;
     flex-direction: row;
     margin: 0;
     overflow: hidden;
@@ -70,12 +70,12 @@ h2.sidePanelText {
 
 .card {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 1em 2em;
     border-radius: 1em;
     background-color: var(--baseAccentColor);
     align-items: stretch;
-    gap: 2em;
+    /*gap: 2em;*/
     text-align: justify;
 }
 
@@ -113,12 +113,6 @@ i.iconHomePage {
     h2.sidePanelText {
         transform: scale(0.8);
     }
-
-    div.card {
-        flex-direction: column;
-        gap: 0;
-    }
-
 }
 
 
