@@ -43,7 +43,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/GroupsPage.html',
             filename: 'GroupsPage.html',
-            chunks: ['GroupsPage'],
+            chunks: ['Groups'],
         }),
         new HtmlWebpackPlugin({
             template: './src/SettingsPage.html',
@@ -61,6 +61,7 @@ module.exports = {
             ]
         }),
     ],
+    devtool:'source-map',
     devServer: {
         static: {
             directory: path.join(__dirname, 'dist'),
