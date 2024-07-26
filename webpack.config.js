@@ -7,7 +7,6 @@ module.exports = {
     mode: 'development',
     entry: {
         Groups: './src/GUI/Groups.ts',
-        HelpOptions: './src/GUI/ImportHelpOptions.ts',
         IndividualGroup: './src/GUI/IndividualGroup.ts'
     },
     output: {

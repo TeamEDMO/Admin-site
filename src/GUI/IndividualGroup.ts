@@ -1,5 +1,5 @@
 import { fetchGroupInfo, getQueryParam, GroupInfo } from './api';
-import { updateHelpEntries } from './ImportHelpOptions';
+import { updateHelpEntries } from './IndividualGroup_HelpEntries';
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');
 const userNames = document.getElementById('userNameText');
