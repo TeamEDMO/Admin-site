@@ -1,5 +1,5 @@
 //Import tasks from txt file to the html div object in IndividualGroup.hmtl
-import { getQueryParam, fetchData } from './api';
+import { getQueryParam, fetchData, sendGroupFeedback } from './api';
 let globalRobotID = getQueryParam('robotID');
 let helpCollection: String[] = [];
 
@@ -37,7 +37,7 @@ export async function updateHelpEntries() {
 
     newContent.push(createPersonalizeHelpInput());
 
-    contentDiv.replaceChildren(...newContent)
+    contentDiv.replaceChildren(...newContent);
 }
 
 function createPredefinedHelpButton(helpLine: string) {
@@ -84,9 +84,8 @@ function createPersonalizeHelpInput() {
     const helpInput = document.createElement('div');
     helpInput.classList.add("textBox");
 
-    const textArea = document.createElement('textarea');
+    const textArea = document.createElement('input');
     textArea.classList.add("textBoxInput");
-    textArea.rows = 4;
     textArea.placeholder = "Type personalized help here...";
     helpInput.appendChild(textArea);
 
@@ -98,7 +97,7 @@ function createPersonalizeHelpInput() {
     return helpInput;
 }
 
-function onHelpAddButtonClicked(textArea: HTMLTextAreaElement) {
+function onHelpAddButtonClicked(textArea: HTMLInputElement) {
     if (textArea.value.trim().length <= 0) {
         console.log("No text!");
         return;
@@ -127,5 +126,5 @@ function onHelpButtonClicked(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
     console.log(`button with ID ${target.id} is was sent for Edmo Group: ${globalRobotID}`);
-    //TODO: SEND INFOMRATION WHICH HELP WAS SENT 
+    sendGroupFeedback(globalRobotID ?? "null", target.id);
 }

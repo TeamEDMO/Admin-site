@@ -10,7 +10,7 @@ async function updateGroups() {
 
     const users = await fetchGroups(); // Fetch user data
     if (users.length === 0) {
-        console.error('No users found or error fetching users.');
+        contentDiv.innerHTML = "<h2>No groups are active at this moment.</h2>";
         return;
     }
 
