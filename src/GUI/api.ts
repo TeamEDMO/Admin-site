@@ -1,14 +1,19 @@
 // Receive data from the server
 
-async function fetchData<T = any>(endpoint: string, options = {}) {
-    const response = await fetch(endpoint, options);
+export async function fetchData<T = any>(endpoint: string, options = {}) {
+    try {
+        const response = await fetch(endpoint, options);
 
-    if (!response.ok)
+        if (!response.ok)
+            return null;
+
+        const data: T | null = await response.json();
+
+        return data;
+    }
+    catch {
         return null;
-
-    const data: T | null = await response.json();
-
-    return data;
+    }
 }
 
 export interface GroupSummary {
@@ -24,7 +29,7 @@ export async function fetchGroups() {
 
 export interface GroupInfo {
     robotID: string;
-    players: { name: string; helpRequested: boolean }[]
+    players: { name: string; helpRequested: boolean; }[];
 }
 export async function fetchGroupInfo(robotName: string) {
     const data = await fetchData<GroupInfo>(relativeURLWithPort(`sessions/${robotName}`, "8080"));
@@ -34,7 +39,6 @@ export async function fetchGroupInfo(robotName: string) {
 
 export function getQueryParam(param: string): string | null {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
     return urlParams.get(param);
 }
 

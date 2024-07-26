@@ -115,9 +115,14 @@ i.iconHomePage {
     }
 }
 
-
-
 /*Group page stuff*/
+.textBoxIcon {
+    align-self: stretch;
+    align-content: center;
+    padding: 1em 2em 1em 1em;
+    margin: -1em;
+}
+
 div.textBox {
     background-color: var(--backgroundColor);
     height: 2em;
@@ -137,6 +142,7 @@ div.textBox {
     border: none;
     padding: 0;
     flex: 1;
+    resize: vertical;
 }
 
 div.wrapContainer {
@@ -258,8 +264,15 @@ input[type="checkbox"] {
     flex: 1;
 }
 
+.helpText {
+    flex: 1;
+    text-align: left;
+    padding-left: 1em;
+}
+
 .helpButton {
     display: flex;
+    flex-direction: row;
     align-items: center;
     background-color: var(--secondaryContentColor);
     border: none;
@@ -267,7 +280,9 @@ input[type="checkbox"] {
     text-align: center;
     font-weight: bolder;
     flex: 1;
+    padding: 1em;
 }
+
 
 .helpIconButton {
     display: flex;

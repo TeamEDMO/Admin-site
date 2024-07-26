@@ -1,3 +1,0 @@
-Check amplitude
-Check frequancy
-Check phase 

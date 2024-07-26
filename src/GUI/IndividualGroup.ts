@@ -1,5 +1,5 @@
 import { fetchGroupInfo, getQueryParam, GroupInfo } from './api';
-import { updateContent } from './ImportHelpOptions';
+import { updateHelpEntries } from './ImportHelpOptions';
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');
 const userNames = document.getElementById('userNameText');
@@ -8,18 +8,21 @@ const helpAmount = document.getElementById("helpText");
 var groupInfo: GroupInfo;
 
 async function getGroupInfo() {
-    if (!robotID)
-        return await fetchGroupInfo("null");
-
-    return await fetchGroupInfo(robotID);
+    return await fetchGroupInfo(robotID ?? "null");
 }
 
-async function updateGroupInfo(firstLoad: boolean = false) {
+async function loadContent() {
     groupInfo = await getGroupInfo();
 
     updateGroupInformation();
     await createTasks();
-    await loadHelpSection(firstLoad);
+    await loadHelpButton();
+}
+
+async function updateGroupInfo() {
+    groupInfo = await getGroupInfo();
+    updateGroupInformation();
+    updateHelpCount();
 }
 
 function updateGroupInformation() {
@@ -42,12 +45,12 @@ function updateGroupInformation() {
 //#region tasks
 let tasksCollection: String[] = [];
 export async function createTasks() {
-    let tasks = (await (await fetch('assets/tasks.txt')).text()).split('\n').map(s => s.trim())
+    let tasks = (await (await fetch('assets/tasks.txt')).text()).split('\n').map(s => s.trim());
 
     // add the loop
     const contentDiv = document.getElementById('TaskList');
 
-    var taskCards: Node[] = []
+    var taskCards: Node[] = [];
 
     if (!contentDiv) {
         console.error('Element with ID "TaskList" not found.');
@@ -56,7 +59,7 @@ export async function createTasks() {
 
     loadCompletedTasks();
 
-    var taskCards: Node[] = []
+    var taskCards: Node[] = [];
 
     const Headline = document.createElement('h2'); //Create the headline for the container 
     Headline.textContent = "Task List";
@@ -73,7 +76,7 @@ export async function createTasks() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = task; //Line as checkbox task ID + add EDMO ID?
-        checkbox.checked = tasksCollection.includes(task)
+        checkbox.checked = tasksCollection.includes(task);
         checkboxdiv.appendChild(checkbox);
 
         const taskText = document.createElement('p');
@@ -83,7 +86,7 @@ export async function createTasks() {
         taskCards.push(taskDiv);
 
         checkbox.addEventListener('change', onCheckboxStateChanged);
-    })
+    });
 
     contentDiv.replaceChildren(...taskCards);
 }
@@ -94,13 +97,12 @@ function onCheckboxStateChanged(event: Event) {
     if (target.checked) {
         console.log(`Checkbox for ${target.value} is checked`);
         tasksCollection.push(target.id);
-        saveCompletedTasks(tasksCollection);
     } else {
         console.log(`Checkbox for ${target.value} is unchecked`);
         //delete from local storage
-        deleteCompletedTasks(target.id);
+        tasksCollection = tasksCollection.filter(t => t != target.id);
     }
-
+    updateCompletedTaskStorage();
     handleCheckboxChange(target.id, target.checked);
 }
 
@@ -109,57 +111,31 @@ function handleCheckboxChange(taskId: string, isChecked: boolean) {
     //TODO: Stuff
     console.log(`Checkbox with ID ${taskId} is now ${isChecked ? 'checked' : 'unchecked'} for Edmo Group: ${robotID}`);
 }
-
-function saveCompletedTasks(tasks: String[]) {
+function updateCompletedTaskStorage() {
     let name = 'taskComplete' + robotID;
-    localStorage.setItem(name, JSON.stringify(tasks));
+    localStorage.setItem(name, JSON.stringify(tasksCollection));
 }
 
-function deleteCompletedTasks(taskToDelete: string) {
-    let name = 'taskComplete' + robotID;
-    const storedTasks = localStorage.getItem(name);
-    if (storedTasks) {
-        // Parse the JSON string into a JavaScript array
-        const parsedTasks = JSON.parse(storedTasks);
-        parsedTasks.forEach((task: string) => {
-            if (task == taskToDelete) {
-                console.log("should delete from storage");
-                const indexToRemove = tasksCollection.indexOf(task);
-                tasksCollection.splice(indexToRemove, 1);
-                localStorage.setItem(name, JSON.stringify(tasksCollection));
-            }
-        })
-    }
-}
 function loadCompletedTasks() {
     let name = 'taskComplete' + robotID;
     const storedTasks = localStorage.getItem(name);
-    if (storedTasks) {
-        tasksCollection = JSON.parse(storedTasks);
-        const concatenatedString = tasksCollection.join(',');
-        console.log(concatenatedString);
-    }
+
+    if (!storedTasks)
+        return;
+
+    tasksCollection = JSON.parse(storedTasks);
+    const concatenatedString = tasksCollection.join(',');
+    console.log(concatenatedString);
 }
 
 //#endregion
 
 //#region help
 
-async function loadHelpSection(firstLoad: boolean) {
-    if (firstLoad) {
-        loadHelpButton();
-        return;
-    }
-
-    updateHelpState()
-
-}
-
 function loadHelpButton() {
-    const switchButton = document.getElementById('switch');
     let switchInput = document.querySelector('#switch input');
 
-    if (!switchButton || !(switchInput instanceof HTMLInputElement))
+    if (!(switchInput instanceof HTMLInputElement))
         return;
 
     //listner
@@ -172,7 +148,8 @@ function loadHelpButton() {
             continue;
 
         switchInput.checked = true;
-        updateHelpState()
+        showHelpSection();
+        break;
     }
 }
 
@@ -180,27 +157,42 @@ function hideHelpSection() {
     console.log(`Undisplay Help Button for Group for ${robotID}`);
 
     const helpList = document.getElementById('HelpList');
-    if (helpList && helpAmount) {
-        helpList.innerHTML = '';
-        helpAmount.innerHTML = '';
-        localStorage.removeItem('help' + robotID);
-    }
+    localStorage.removeItem('help' + robotID);
 
+    if (!helpList || !helpAmount)
+        return;
+
+    helpList.innerHTML = '';
+    helpAmount.innerHTML = '';
 }
 
 function showHelpSection() {
-    const maxHelp = groupInfo.players.length
-    const numberOfHelp = groupInfo.players.filter(p => p.helpRequested).length
+
     localStorage.setItem('help' + robotID, "on");
 
+    updateHelpCount();
+    updateHelpEntries();
+}
+
+function updateHelpCount() {
+    let switchInput = document.querySelector('#switch input');
+
+    if (!(switchInput instanceof HTMLInputElement))
+        return;
+
     if (!helpAmount) {
-        console.log("helpAmount not found")
-        return
+        console.log("helpAmount not found");
+        return;
     }
 
-    helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
-
-    updateContent();
+    if (switchInput.checked) {
+        const maxHelp = groupInfo.players.length;
+        const numberOfHelp = groupInfo.players.filter(p => p.helpRequested).length;
+        helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
+    }
+    else {
+        helpAmount.innerHTML = "";
+    }
 }
 
 function updateHelpState() {
@@ -209,11 +201,9 @@ function updateHelpState() {
     if (!(switchInput instanceof HTMLInputElement))
         return;
 
-    if (switchInput.checked)
-        showHelpSection();
-    else
-        hideHelpSection();
+    switchInput.checked ? showHelpSection() : hideHelpSection();
 }
 //#endregion
 
-updateGroupInfo(true);
+loadContent();
+setInterval(updateGroupInfo, 5000);
