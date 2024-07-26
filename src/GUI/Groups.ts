@@ -6,7 +6,7 @@ async function updateGroups() {
     const contentDiv = document.getElementById('creatingGroupPanels');
 
     if (contentDiv) {
-        const users: { robotID: string; names: string[] }[] = await fetchGroups(); // Fetch user data
+        const users = await fetchGroups(); // Fetch user data
         if (users.length === 0) {
             console.error('No users found or error fetching users.');
             return;

@@ -1,30 +1,25 @@
 // Receive data from the server
-async function fetchData(endpoint: string, options = {}) {
-    try {
-        const response = await fetch(endpoint, options);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('Data received:', data);
-        return data;
-    } catch (error) {
-        console.error('Error fetching data:', error);
+
+async function fetchData<T = any>(endpoint: string, options = {}) {
+    const response = await fetch(endpoint, options);
+
+    if (!response.ok)
         return null;
-    }
+
+    const data: T | null = await response.json();
+
+    return data;
 }
+
 export interface GroupSummary {
     robotID: string;
     names: string[];
 }
 // Retrieve user data from the server
 export async function fetchGroups() {
-    const data: GroupSummary[] | null = await fetchData(relativeURLWithPort(`activeSessions`, "8080"));
+    const data = await fetchData<GroupSummary[]>(relativeURLWithPort(`activeSessions`, "8080"));
 
-    if (!data)
-        return [];
-
-    return data;
+    return data ?? [];
 }
 
 export interface GroupInfo {
@@ -32,16 +27,9 @@ export interface GroupInfo {
     players: { name: string; helpRequested: boolean }[]
 }
 export async function fetchGroupInfo(robotName: string) {
-    const data: GroupInfo | null = await fetchData(relativeURLWithPort(`sessions/${robotName}`, "8080"));
+    const data = await fetchData<GroupInfo>(relativeURLWithPort(`sessions/${robotName}`, "8080"));
 
-    if (!data) {
-        const sampleUser: GroupInfo = {
-            robotID: `${robotName} (Not active)`,
-            players: []
-        };
-        return sampleUser;
-    }
-    return data;
+    return data ?? { robotID: `${robotName} (Not active)`, players: [] };
 }
 
 export function getQueryParam(param: string): string | null {
