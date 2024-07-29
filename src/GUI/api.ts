@@ -28,29 +28,44 @@ export async function fetchGroups() {
     return data ?? [];
 }
 
+export interface EDMOPlayer {
+    name: string;
+    HelpRequested: boolean;
+}
+export interface EDMOTask {
+    Title: string;
+    Value: boolean;
+}
 export interface GroupInfo {
     robotID: string;
-    players: { name: string; helpRequested: boolean; }[];
+    players: EDMOPlayer[];
+    tasks: EDMOTask[];
+    helpEnabled: boolean;
 }
+
 export async function fetchGroupInfo(robotName: string) {
     const data = await fetchData<GroupInfo>(relativeURLWithPort(`sessions/${robotName}`, "8080"));
 
-    return data ?? { robotID: `${robotName} (Not active)`, players: [] };
+    return data ?? { robotID: `${robotName} (Not active)`, players: [], tasks: [], helpEnabled: false };
 }
 
 export async function sendGroupFeedback(robotName: string, message: string) {
     await fetchData(relativeURLWithPort(`sessions/${robotName}/feedback`, "8080"), { method: "PUT", body: message });
 }
 
-
-export async function getGroupTasks(robotName: string) {
-    return await fetchData<{ taskName: string, completed: boolean; }>(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"));
-}
 export async function setGroupTasks(robotName: string, taskname: string, value: boolean) {
     var obj = Object();
-    obj[taskname] = value;
+    obj["Title"] = taskname;
+    obj["Value"] = value;
 
     return await fetchData(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"), { method: "PUT", body: JSON.stringify(obj) });
+}
+
+export async function setHelpEnabled(robotName: string, value: boolean) {
+    var obj = Object();
+    obj["Value"] = value;
+
+    return await fetchData(relativeURLWithPort(`sessions/${robotName}/helpEnabled`, "8080"), { method: "PUT", body: JSON.stringify(obj) });
 }
 
 export function getQueryParam(param: string): string | null {

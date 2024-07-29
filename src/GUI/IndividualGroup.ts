@@ -1,28 +1,29 @@
-import { fetchGroupInfo, getGroupTasks, getQueryParam, GroupInfo, setGroupTasks } from './api';
+import { fetchGroupInfo, getQueryParam, GroupInfo, setGroupTasks, setHelpEnabled } from './api';
 import { updateHelpEntries } from './IndividualGroup_HelpEntries';
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');
 const userNames = document.getElementById('userNameText');
 const helpAmount = document.getElementById("helpText");
+const helpList = document.getElementById('HelpList');
 
-var groupInfo: GroupInfo;
+
+var groupInfo: GroupInfo = {
+    robotID: "null",
+    players: [],
+    tasks: [],
+    helpEnabled: false
+};
 
 async function getGroupInfo() {
     return await fetchGroupInfo(robotID ?? "null");
 }
 
-async function loadContent() {
-    groupInfo = await getGroupInfo();
-
-    updateGroupInformation();
-    await createTasks();
-    await loadHelpButton();
-}
 
 async function updateGroupInfo() {
     groupInfo = await getGroupInfo();
     updateGroupInformation();
-    updateHelpCount();
+    updateTasks();
+    updateHelpState();
 }
 
 function updateGroupInformation() {
@@ -43,9 +44,8 @@ function updateGroupInformation() {
 }
 
 //#region tasks
-let tasksCollection: String[] = [];
-export async function createTasks() {
-    let tasks = await getGroupTasks(robotID ?? "null");
+export async function updateTasks() {
+    let tasks = groupInfo.tasks;
 
     // add the loop
     const contentDiv = document.getElementById('TaskList');
@@ -57,26 +57,17 @@ export async function createTasks() {
 
     var taskCards: Node[] = [];
 
-    if (!tasks) {
-        contentDiv.innerHTML = "";
-        return;
-    }
-
-
-    loadCompletedTasks();
-
-    var taskCards: Node[] = [];
-
     const Headline = document.createElement('h2'); //Create the headline for the container 
     Headline.textContent = "Task List";
     taskCards.push(Headline);
-    const tasksNames = Object.keys(tasks);
 
-    const taskObj: any = tasks as object;
+    if (tasks.length == 0) {
+        const subtitle = document.createElement("h3");
+        subtitle.textContent = "There are no tasks set for this session";
+        taskCards.push(subtitle);
+    }
 
-    tasksNames.forEach(task => {
-        const completed: any = taskObj[task];
-
+    tasks.forEach(task => {
         // Container that hold the checkbox and Text
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('taskDiv');
@@ -86,12 +77,12 @@ export async function createTasks() {
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.id = task; //Line as checkbox task ID + add EDMO ID?
-        checkbox.checked = taskObj[task];
+        checkbox.id = task.Title;
+        checkbox.checked = task.Value;
         checkboxdiv.appendChild(checkbox);
 
         const taskText = document.createElement('p');
-        taskText.textContent = task;
+        taskText.textContent = task.Title;
 
         taskDiv.replaceChildren(checkbox, taskText);
         taskCards.push(taskDiv);
@@ -108,104 +99,59 @@ function onCheckboxStateChanged(event: Event) {
     setGroupTasks(robotID ?? "null", target.id, target.checked);
 }
 
-
-function handleCheckboxChange(taskId: string, isChecked: boolean) {
-    //TODO: Stuff
-    console.log(`Checkbox with ID ${taskId} is now ${isChecked ? 'checked' : 'unchecked'} for Edmo Group: ${robotID}`);
-}
-function updateCompletedTaskStorage() {
-    let name = 'taskComplete' + robotID;
-    localStorage.setItem(name, JSON.stringify(tasksCollection));
-}
-
-function loadCompletedTasks() {
-    let name = 'taskComplete' + robotID;
-    const storedTasks = localStorage.getItem(name);
-
-    if (!storedTasks)
-        return;
-
-    tasksCollection = JSON.parse(storedTasks);
-    const concatenatedString = tasksCollection.join(',');
-    console.log(concatenatedString);
-}
-
 //#endregion
 
 //#region help
 
-function loadHelpButton() {
+function loadHelpEnabledbutton() {
     let switchInput = document.querySelector('#switch input');
 
     if (!(switchInput instanceof HTMLInputElement))
         return;
 
     //listner
-    switchInput.addEventListener('change', (event: Event) => updateHelpState());
-
-    //activate if in local storage/ check if there is a task with this eobotID
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key != 'help' + robotID)
-            continue;
-
-        switchInput.checked = true;
-        showHelpSection();
-        break;
-    }
+    switchInput.addEventListener('change', onSwitchClicked);
 }
 
-function hideHelpSection() {
-    console.log(`Undisplay Help Button for Group for ${robotID}`);
+async function onSwitchClicked(e: Event) {
+    if (groupInfo.robotID.endsWith("(Not active)")) {
+        (e.target as HTMLInputElement).checked = false;
+        return;
+    }
+    groupInfo.helpEnabled = (e.target as HTMLInputElement).checked;
 
-    const helpList = document.getElementById('HelpList');
-    localStorage.removeItem('help' + robotID);
+    setHelpEnabled(robotID ?? "null", groupInfo.helpEnabled);
+    updateHelpState();
+}
+
+function updateHelpState() {
+    {
+        let switchInput = document.querySelector('#switch input');
+
+        if (switchInput instanceof HTMLInputElement)
+            switchInput.checked = groupInfo.helpEnabled;
+    }
 
     if (!helpList || !helpAmount)
         return;
 
-    helpList.innerHTML = '';
-    helpAmount.innerHTML = '';
-}
 
-function showHelpSection() {
-
-    localStorage.setItem('help' + robotID, "on");
-
-    updateHelpCount();
-    updateHelpEntries();
-}
-
-function updateHelpCount() {
-    let switchInput = document.querySelector('#switch input');
-
-    if (!(switchInput instanceof HTMLInputElement))
-        return;
-
-    if (!helpAmount) {
-        console.log("helpAmount not found");
-        return;
-    }
-
-    if (switchInput.checked) {
+    if (groupInfo.helpEnabled) {
+        // Update help count
         const maxHelp = groupInfo.players.length;
-        const numberOfHelp = groupInfo.players.filter(p => p.helpRequested).length;
+        const numberOfHelp = groupInfo.players.filter(p => p.HelpRequested).length;
         helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
+
+        updateHelpEntries();
+
     }
     else {
-        helpAmount.innerHTML = "";
+        helpList.innerHTML = '';
+        helpAmount.innerHTML = '';
     }
-}
-
-function updateHelpState() {
-    let switchInput = document.querySelector('#switch input');
-
-    if (!(switchInput instanceof HTMLInputElement))
-        return;
-
-    switchInput.checked ? showHelpSection() : hideHelpSection();
 }
 //#endregion
 
-loadContent();
+loadHelpEnabledbutton();
+updateGroupInfo();
 setInterval(updateGroupInfo, 5000);
