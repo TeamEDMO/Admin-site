@@ -58,8 +58,8 @@ async function updateGroupsDisplay() {
             const robotVoteBubble = document.createElement('div');
             robotVoteBubble.className = "voteBubble";
 
-            const color2 = `hsl(0, 100%, 50%,  ${Math.pow(voteSeverity, 2)})`;
-            robotVoteBubble.style.backgroundColor = color2;
+            const color = `hsl(0, 100%, 50%,  ${Math.pow(voteSeverity, 2)})`;
+            robotVoteBubble.style.backgroundColor = color;
 
             const robotVoteNumber = document.createElement("span");
 
@@ -129,5 +129,5 @@ declare global {
 String.prototype.matchFuzzy = matchFuzzy;
 
 init();
-//setInterval(refreshGroupData, 5000);
+setInterval(refreshGroupData, 5000);
 
