@@ -10,6 +10,7 @@
     --secondaryContentColor: hsl(var(--hue), 60%, 55%);
 
     --mainLayerShadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.3);
+    font-family: sans-serif;
 }
 
 body {
