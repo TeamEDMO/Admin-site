@@ -58,20 +58,17 @@ async function updateGroupsDisplay() {
             const robotVoteBubble = document.createElement('div');
             robotVoteBubble.className = "voteBubble";
 
-            const lightness = 15 + 40 * (1 - voteSeverity);
-
-            const color = `hsl(var(--hue), 50%, ${lightness}%)`;
             const color2 = `hsl(0, 100%, 50%,  ${Math.pow(voteSeverity, 2)})`;
             robotVoteBubble.style.backgroundColor = color2;
 
             const robotVoteNumber = document.createElement("span");
 
             robotVoteNumber.className = "voteBubbleNumber";
-            robotVoteNumber.textContent = `${group.HelpNumber}`;
+            robotVoteNumber.textContent = `${group.HelpNumber} / ${group.names.length}`;
 
             robotVoteBubble.appendChild(robotVoteNumber);
 
-            groupCard.appendChild(robotVoteBubble)
+            groupCard.appendChild(robotVoteBubble);
         }
 
         const spacer1 = document.createElement('div');
@@ -132,5 +129,5 @@ declare global {
 String.prototype.matchFuzzy = matchFuzzy;
 
 init();
-setInterval(refreshGroupData, 5000);
+//setInterval(refreshGroupData, 5000);
 

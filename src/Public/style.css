@@ -165,12 +165,13 @@ div.wrapContainer {
     display: flex;
     color: var(--baseTextColor);
     text-decoration: none;
+    min-height: 20%;
+    min-width: 20%;
 }
 
 .voteBubble {
-    border-radius: 100%;
+    border-radius: 0.5em;
     padding: 0.5em;
-    aspect-ratio: 1;
     text-align: center;
     font-weight: bolder;
     align-self: flex-end;
