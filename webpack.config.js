@@ -7,7 +7,8 @@ module.exports = {
     mode: 'development',
     entry: {
         Groups: './src/GUI/Groups.ts',
-        IndividualGroup: './src/GUI/IndividualGroup.ts'
+        IndividualGroup: './src/GUI/IndividualGroup.ts',
+        Settings: './src/GUI/Settings.ts'
     },
     output: {
         filename: '[name].bundle.js',
@@ -47,7 +48,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/SettingsPage.html',
             filename: 'SettingsPage.html',
-            chunks: ['SettingsPage'],
+            chunks: ['Settings'],
         }),
         new HtmlWebpackPlugin({
             template: './src/IndividualGroup.html',
