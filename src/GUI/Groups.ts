@@ -73,7 +73,7 @@ async function updateGroupsDisplay() {
 
             groupCard.appendChild(robotVoteBubble)
         }
-        
+
         const spacer1 = document.createElement('div');
         spacer1.className = "spacer";
 
@@ -132,5 +132,5 @@ declare global {
 String.prototype.matchFuzzy = matchFuzzy;
 
 init();
-//setInterval(refreshGroupData, 5000);
+setInterval(refreshGroupData, 5000);
 
