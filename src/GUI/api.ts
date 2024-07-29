@@ -38,7 +38,18 @@ export async function fetchGroupInfo(robotName: string) {
 }
 
 export async function sendGroupFeedback(robotName: string, message: string) {
-    await fetchData<GroupInfo>(relativeURLWithPort(`sessions/${robotName}/feedback`, "8080"), {method: "PUT", body: message});
+    await fetchData(relativeURLWithPort(`sessions/${robotName}/feedback`, "8080"), { method: "PUT", body: message });
+}
+
+
+export async function getGroupTasks(robotName: string) {
+    return await fetchData<{ taskName: string, completed: boolean; }>(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"));
+}
+export async function setGroupTasks(robotName: string, taskname: string, value: boolean) {
+    var obj = Object()
+    obj[taskname] = value
+
+    return await fetchData(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"), { method: "PUT", body: JSON.stringify(obj) });
 }
 
 export function getQueryParam(param: string): string | null {

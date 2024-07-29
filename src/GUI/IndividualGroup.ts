@@ -1,4 +1,4 @@
-import { fetchGroupInfo, getQueryParam, GroupInfo } from './api';
+import { fetchGroupInfo, getGroupTasks, getQueryParam, GroupInfo, setGroupTasks } from './api';
 import { updateHelpEntries } from './IndividualGroup_HelpEntries';
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');
@@ -45,17 +45,23 @@ function updateGroupInformation() {
 //#region tasks
 let tasksCollection: String[] = [];
 export async function createTasks() {
-    let tasks = (await (await fetch('assets/tasks.txt')).text()).split('\n').map(s => s.trim());
+    let tasks = await getGroupTasks(robotID ?? "null");
 
     // add the loop
     const contentDiv = document.getElementById('TaskList');
-
-    var taskCards: Node[] = [];
 
     if (!contentDiv) {
         console.error('Element with ID "TaskList" not found.');
         return;
     }
+
+    var taskCards: Node[] = [];
+
+    if (!tasks) {
+        contentDiv.innerHTML = "";
+        return;
+    }
+
 
     loadCompletedTasks();
 
@@ -64,8 +70,13 @@ export async function createTasks() {
     const Headline = document.createElement('h2'); //Create the headline for the container 
     Headline.textContent = "Task List";
     taskCards.push(Headline);
+    const tasksNames = Object.keys(tasks);
 
-    tasks.forEach(task => {
+    const taskObj: any = tasks as object;
+
+    tasksNames.forEach(task => {
+        const completed: any = taskObj[task];
+
         // Container that hold the checkbox and Text
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('taskDiv');
@@ -76,7 +87,7 @@ export async function createTasks() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = task; //Line as checkbox task ID + add EDMO ID?
-        checkbox.checked = tasksCollection.includes(task);
+        checkbox.checked = taskObj[task];
         checkboxdiv.appendChild(checkbox);
 
         const taskText = document.createElement('p');
@@ -94,16 +105,7 @@ export async function createTasks() {
 function onCheckboxStateChanged(event: Event) {
     var target = event.target as HTMLInputElement;
 
-    if (target.checked) {
-        console.log(`Checkbox for ${target.value} is checked`);
-        tasksCollection.push(target.id);
-    } else {
-        console.log(`Checkbox for ${target.value} is unchecked`);
-        //delete from local storage
-        tasksCollection = tasksCollection.filter(t => t != target.id);
-    }
-    updateCompletedTaskStorage();
-    handleCheckboxChange(target.id, target.checked);
+    setGroupTasks(robotID ?? "null", target.id, target.checked);
 }
 
 
