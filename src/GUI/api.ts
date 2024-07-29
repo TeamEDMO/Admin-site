@@ -19,6 +19,7 @@ export async function fetchData<T = any>(endpoint: string, options?: RequestInit
 export interface GroupSummary {
     robotID: string;
     names: string[];
+    HelpNumber: number;
 }
 // Retrieve user data from the server
 export async function fetchGroups() {
@@ -46,8 +47,8 @@ export async function getGroupTasks(robotName: string) {
     return await fetchData<{ taskName: string, completed: boolean; }>(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"));
 }
 export async function setGroupTasks(robotName: string, taskname: string, value: boolean) {
-    var obj = Object()
-    obj[taskname] = value
+    var obj = Object();
+    obj[taskname] = value;
 
     return await fetchData(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"), { method: "PUT", body: JSON.stringify(obj) });
 }

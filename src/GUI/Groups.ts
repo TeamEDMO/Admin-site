@@ -12,7 +12,7 @@ async function init() {
 }
 
 async function refreshGroupData() {
-    groups = await fetchGroups(); // Fetch user data
+    groups = (await fetchGroups()).sort((lhs, rhs) => rhs.HelpNumber - lhs.HelpNumber); // Fetch user data
     updateGroupsDisplay();
 }
 
@@ -53,18 +53,48 @@ async function updateGroupsDisplay() {
         groupCard.id = group.robotID;
         groupCard.href = `IndividualGroup.html?robotID=${encodeURIComponent(group.robotID)}`;
 
+        if (group.HelpNumber > 0) {
+            const voteSeverity = group.HelpNumber / group.names.length;
+            const robotVoteBubble = document.createElement('div');
+            robotVoteBubble.className = "voteBubble";
+
+            const lightness = 15 + 40 * (1 - voteSeverity);
+
+            const color = `hsl(var(--hue), 50%, ${lightness}%)`;
+            const color2 = `hsl(0, 100%, 50%,  ${Math.pow(voteSeverity, 2)})`;
+            robotVoteBubble.style.backgroundColor = color2;
+
+            const robotVoteNumber = document.createElement("span");
+
+            robotVoteNumber.className = "voteBubbleNumber";
+            robotVoteNumber.textContent = `${group.HelpNumber}`;
+
+            robotVoteBubble.appendChild(robotVoteNumber);
+
+            groupCard.appendChild(robotVoteBubble)
+        }
+        
+        const spacer1 = document.createElement('div');
+        spacer1.className = "spacer";
+
         const robotNameTag = document.createElement('h1');
         robotNameTag.innerHTML = group.robotID;
 
         const usersList = document.createElement('p');
+
+        const spacer2 = document.createElement('div');
+        spacer2.className = "spacer";
 
         if (group.names.length == 0)
             usersList.innerHTML = "No are to players";
         else
             usersList.innerHTML = group.names.join('<br>');
 
+
+        groupCard.appendChild(spacer1);
         groupCard.appendChild(robotNameTag);
         groupCard.appendChild(usersList);
+        groupCard.appendChild(spacer2);
 
         newChildren.push(groupCard);
     });
@@ -102,5 +132,5 @@ declare global {
 String.prototype.matchFuzzy = matchFuzzy;
 
 init();
-setInterval(refreshGroupData, 5000);
+//setInterval(refreshGroupData, 5000);
 
