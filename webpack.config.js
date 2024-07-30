@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -45,6 +46,11 @@ module.exports = {
             filename: 'IndividualGroup.html',
             chunks: ['IndividualGroup'],
         }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'static' }
+            ]
+        })
     ],
     devServer: {
         headers: {
