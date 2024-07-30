@@ -1,4 +1,4 @@
-import { getSimpleModeEnabled, setSimpleModeEnabled } from "./api";
+import { getSimpleModeEnabled, setSimpleModeEnabled } from "./API";
 
 const switchInput = document.querySelector('#switch input');
 

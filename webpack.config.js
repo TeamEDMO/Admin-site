@@ -1,14 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-// move the plubic out 
-// look into the html plugin 
+
 module.exports = {
     mode: 'development',
     entry: {
-        Groups: './src/GUI/Groups.ts',
-        IndividualGroup: './src/GUI/IndividualGroup.ts',
-        Settings: './src/GUI/Settings.ts'
+        Groups: './src/assets/scripts/Groups.ts',
+        IndividualGroup: './src/assets/scripts/IndividualGroup.ts',
+        Settings: './src/assets/scripts/Settings.ts'
     },
     output: {
         filename: '[name].bundle.js',
@@ -21,15 +19,7 @@ module.exports = {
                 test: /\.ts$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
-            },
+            }
         ],
     },
     resolve: {
@@ -55,17 +45,8 @@ module.exports = {
             filename: 'IndividualGroup.html',
             chunks: ['IndividualGroup'],
         }),
-        new CopyPlugin({
-            patterns: [
-                { from: 'src/Public', to: 'assets' }
-            ]
-        }),
     ],
-    devtool:'source-map',
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-        },
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
@@ -75,4 +56,5 @@ module.exports = {
         port: 9000,
         historyApiFallback: true,
     },
+    cache: true
 };

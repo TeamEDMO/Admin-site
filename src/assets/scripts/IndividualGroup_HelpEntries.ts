@@ -1,5 +1,5 @@
 //Import tasks from txt file to the html div object in IndividualGroup.hmtl
-import { getQueryParam, fetchData, sendGroupFeedback } from './api';
+import { getQueryParam, fetchData, sendGroupFeedback } from './API';
 let globalRobotID = getQueryParam('robotID');
 let helpCollection: String[] = [];
 

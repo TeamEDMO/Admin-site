@@ -1,4 +1,4 @@
-import { fetchGroupInfo, getQueryParam, GroupInfo, setGroupTasks, setHelpEnabled } from './api';
+import { fetchGroupInfo, getQueryParam, GroupInfo, setGroupTasks, setHelpEnabled } from './API';
 import { updateHelpEntries } from './IndividualGroup_HelpEntries';
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');

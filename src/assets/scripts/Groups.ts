@@ -1,5 +1,5 @@
 // Generate dynamically group panels in the GroupsPage.html
-import { fetchGroups, type GroupSummary } from './api';
+import { fetchGroups, type GroupSummary } from './API';
 
 var groups: GroupSummary[] = [];
 var searchBarContent: string = "";
