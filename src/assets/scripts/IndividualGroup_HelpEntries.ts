@@ -80,8 +80,13 @@ function onHelpDeleteClicked(e: Event) {
     e.preventDefault();
 }
 
+let helpInput: HTMLDivElement | null;
+
 function createPersonalizeHelpInput() {
-    const helpInput = document.createElement('div');
+    if (helpInput)
+        return helpInput;
+
+    helpInput = document.createElement('div');
     helpInput.classList.add("textBox");
 
     const textArea = document.createElement('input');
@@ -104,6 +109,7 @@ function onHelpAddButtonClicked(textArea: HTMLInputElement) {
     }
 
     helpCollection.push(textArea.value);
+    textArea.value = "";
     updateHelpStorage();
     updateHelpEntries();
 }

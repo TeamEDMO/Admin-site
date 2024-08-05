@@ -6,7 +6,7 @@ const userNames = document.getElementById('userNameText');
 const helpAmount = document.getElementById("helpText");
 const helpList = document.getElementById('HelpList');
 
-
+var lastGroupInfo: GroupInfo;
 var groupInfo: GroupInfo = {
     robotID: "null",
     players: [],
@@ -20,6 +20,7 @@ async function getGroupInfo() {
 
 
 async function updateGroupInfo() {
+    lastGroupInfo = groupInfo;
     groupInfo = await getGroupInfo();
     updateGroupInformation();
     updateTasks();
@@ -121,10 +122,10 @@ async function onSwitchClicked(e: Event) {
     groupInfo.helpEnabled = (e.target as HTMLInputElement).checked;
 
     setHelpEnabled(robotID ?? "null", groupInfo.helpEnabled);
-    updateHelpState();
+    updateHelpState(true);
 }
 
-function updateHelpState() {
+function updateHelpState(forceUpdate = false) {
     {
         let switchInput = document.querySelector('#switch input');
 
@@ -135,19 +136,20 @@ function updateHelpState() {
     if (!helpList || !helpAmount)
         return;
 
+    if (forceUpdate || (groupInfo.helpEnabled != lastGroupInfo.helpEnabled)) {
+        if (groupInfo.helpEnabled) {
+            // Update help count
+            const maxHelp = groupInfo.players.length;
+            const numberOfHelp = groupInfo.players.filter(p => p.HelpRequested).length;
+            helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
 
-    if (groupInfo.helpEnabled) {
-        // Update help count
-        const maxHelp = groupInfo.players.length;
-        const numberOfHelp = groupInfo.players.filter(p => p.HelpRequested).length;
-        helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
+            updateHelpEntries();
 
-        updateHelpEntries();
-
-    }
-    else {
-        helpList.innerHTML = '';
-        helpAmount.innerHTML = '';
+        }
+        else {
+            helpList.innerHTML = '';
+            helpAmount.innerHTML = '';
+        }
     }
 }
 //#endregion
