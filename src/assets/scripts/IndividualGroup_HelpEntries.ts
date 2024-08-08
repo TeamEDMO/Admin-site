@@ -48,6 +48,7 @@ function createPredefinedHelpButton(helpLine: string) {
     const helpText = document.createElement('span');
     helpText.className = "helpText";
     helpText.textContent = helpLine;
+    helpText.id = helpLine;
     button.appendChild(helpText);
 
     button.addEventListener("click", onHelpButtonClicked);

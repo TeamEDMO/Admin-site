@@ -53,6 +53,7 @@ export async function fetchGroupInfo(robotName: string) {
 }
 
 export async function sendGroupFeedback(robotName: string, message: string) {
+    console.log(`${robotName} ${message}`);
     await fetchData(relativeURLWithPort(`sessions/${robotName}/feedback`, "8080"), { method: "PUT", body: message });
 }
 

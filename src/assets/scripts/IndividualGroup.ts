@@ -39,7 +39,7 @@ function updateGroupInformation() {
         userNames.innerHTML = "No players are here";
     }
     else {
-        const groupMembers = groupInfo.players.map(p => p.name).join(",");
+        const groupMembers = groupInfo.players.map(p => p.name).join(", ");
         userNames.innerHTML = groupMembers;
     }
 }
