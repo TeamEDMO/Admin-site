@@ -136,20 +136,23 @@ function updateHelpState(forceUpdate = false) {
     if (!helpList || !helpAmount)
         return;
 
-    if (forceUpdate || (groupInfo.helpEnabled != lastGroupInfo.helpEnabled)) {
-        if (groupInfo.helpEnabled) {
-            // Update help count
-            const maxHelp = groupInfo.players.length;
-            const numberOfHelp = groupInfo.players.filter(p => p.HelpRequested).length;
-            helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
 
+    if (groupInfo.helpEnabled) {
+        // Update help count
+        const maxHelp = groupInfo.players.length;
+        const numberOfHelp = groupInfo.players.filter(p => p.HelpRequested).length;
+        helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
+
+        if (forceUpdate || (groupInfo.helpEnabled != lastGroupInfo.helpEnabled))
             updateHelpEntries();
 
-        }
-        else {
-            helpList.innerHTML = '';
-            helpAmount.innerHTML = '';
-        }
+    }
+    else {
+        helpList.innerHTML = '';
+        helpAmount.innerHTML = '';
+
+        for (const p of groupInfo.players)
+            p.HelpRequested = false;
     }
 }
 //#endregion
