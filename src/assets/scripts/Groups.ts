@@ -1,5 +1,6 @@
 // Generate dynamically group panels in the GroupsPage.html
 import { fetchGroups, type GroupSummary } from './API';
+import { LocalizationManager } from "./Localization";
 
 var groups: GroupSummary[] = [];
 var searchBarContent: string = "";
@@ -37,8 +38,14 @@ async function updateGroupsDisplay() {
     if (!contentDiv)
         return;
 
+
+
     if (groups.length === 0) {
-        contentDiv.innerHTML = "<h2>No groups are active at this moment.</h2>";
+        const text = document.createElement("h2");
+        text.innerText = "No groups are active at this moment.";
+        LocalizationManager.setLocalisationKey(text, "noGroups");
+
+        contentDiv.replaceChildren(text);
         return;
     }
 
@@ -128,6 +135,10 @@ declare global {
 }
 String.prototype.matchFuzzy = matchFuzzy;
 
-init();
+await LocalizationManager.loadLocalisationBanks("/strings/common.json",
+    "/strings/groups.json"
+);
+
+await init();
 setInterval(refreshGroupData, 5000);
 

@@ -15,13 +15,14 @@
     <%= require('html-loader!./includes/sidebar.html').default %>
         <div class="mainPanel">
             <div>
-                <h1>Groups</h1>
+                <h1 data-i18n-key="groups">GROUPS</h1>
                 <div class="textBox">
                     <i class="textBoxIcon fa-solid fa-magnifying-glass"></i>
-                    <input class="textBoxInput" type="search" name="" id="groupsSearch" placeholder="Search" autocomplete="off" />
+                    <input class="textBoxInput" type="search" name="" id="groupsSearch" placeholder="search"
+                        autocomplete="off" data-i18n-key="search" />
                 </div>
             </div>
-           
+
             <div class="mainContent wrapContainer" id="creatingGroupPanels">
             </div>
         </div>
