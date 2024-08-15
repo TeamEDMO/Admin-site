@@ -1,4 +1,5 @@
 import { getSimpleModeEnabled, setSimpleModeEnabled } from "./API";
+import { LocalizationManager } from "./Localization";
 
 const switchInput = document.querySelector('#switch input');
 
@@ -18,4 +19,7 @@ async function onSwitchClicked(e: Event) {
     await setSimpleModeEnabled(switchInput.checked);
 }
 
-init()
+
+await init()
+await LocalizationManager.loadLocalisationBanks("/strings/common.json",
+    "/strings/settings.json")
