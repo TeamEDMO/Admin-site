@@ -1,0 +1,22 @@
+{
+    "welcomeToEdmo": {
+        "en": "WELCOME TO EDMO",
+        "nl": "WELKOM BIJ EDMO"
+    },
+    "welcomeDesc": {
+        "en": "On this page you can find all the information on how to navigate throughout the interface.",
+        "nl": "Op deze pagina vindt u alle informatie over hoe u door de interface kunt navigeren."
+    },
+    "groupDesc": {
+        "en": "Upon selecting a desired group, you can interact with it by enabling or disabling the help button. You can distribute tasks and mark them as complete. Additionally, you have the option to customize interface preferences for the group to suit specific needs.",
+        "nl": "Nadat u een gewenste groep hebt geselecteerd, kunt u ermee interacteren door de helpknop in of uit te schakelen. U kunt taken verdelen en ze als voltooid markeren. Daarnaast hebt u de mogelijkheid om interfacevoorkeuren voor de groep aan te passen aan specifieke behoeften."
+    },
+    "settingsDesc": {
+        "en": "In the settings page, the admin can customize interface preferences.",
+        "nl": "Op de instellingenpagina kan de beheerder de interfacevoorkeuren aanpassen."
+    },
+    "homeDesc": {
+        "en": "Return to the homepage to review the instructions again at anytime.",
+        "nl": "U kunt op elk gewenst moment terugkeren naar de startpagina om de instructies opnieuw te bekijken."
+    }
+}

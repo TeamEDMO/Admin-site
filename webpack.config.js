@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: {
+        Index: './src/assets/scripts/index.ts',
         Groups: './src/assets/scripts/Groups.ts',
         IndividualGroup: './src/assets/scripts/IndividualGroup.ts',
         Settings: './src/assets/scripts/Settings.ts'
@@ -30,7 +31,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             filename: 'index.html',
-            chunks: [],
+            chunks: ['Index'],
         }),
         new HtmlWebpackPlugin({
             template: './src/GroupsPage.html',
@@ -54,11 +55,6 @@ module.exports = {
         })
     ],
     devServer: {
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-        },
         compress: true,
         port: 9000,
         historyApiFallback: true,

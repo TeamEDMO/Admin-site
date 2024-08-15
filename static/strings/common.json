@@ -1,0 +1,14 @@
+{
+    "home": {
+        "en": "HOME",
+        "nl": "START"
+    },
+    "groups": {
+        "en": "GROUPS",
+        "nl": "GROUPEN"
+    },
+    "settings":{
+        "en": "SETTINGS",
+        "nl": "INSTELLINGEN"
+    }
+}

@@ -15,30 +15,32 @@
     <%= require('html-loader!./includes/sidebar.html').default %>
         <div class="mainPanel">
             <div>
-                <h1>WELCOME TO EDMO</h1>
-                <h3>
+                <h1 data-i18n-key="welcomeToEdmo">WELCOME TO EDMO</h1>
+                <h3 data-i18n-key="welcomeDesc">
                     On this page you can find all the information on how to navigate throughout the interface.
                 </h3>
             </div>
             <div class="mainContent">
                 <div class="card">
-                    <h3><i class="fa-solid fa-user-group"></i>&nbsp;&nbsp; <span>Groups</span></h3>
-                    
-                    <p class="groupText">Upon selecting a desired group, you can interact with it by enabling or
-                        disabling the help button. You can distribute tasks and mark them as complete. Additionally,
-                        you
-                        have the option to customize interface preferences for the group to suit specific needs.</p>
+                    <h3><i class="fa-solid fa-user-group"></i>&nbsp;&nbsp; <span data-i18n-key="groups">Groups</span>
+                    </h3>
+
+                    <p class="groupText" data-i18n-key="groupDesc">Upon selecting a desired group, you can interact with
+                        it by enabling or disabling the help button. You can distribute tasks and mark them as complete.
+                        Additionally, you have the option to customize interface preferences for the group to suit
+                        specific needs.</p>
                 </div>
 
                 <div class="card">
-                    <h3><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Settings</h3>
-                    <p class="groupText">In the settings page, the admin can customize interface preferences.</p>
+                    <h3><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; <span data-i18n-key="settings">Settings</span></h3>
+                    <p class="groupText" data-i18n-key="settingsDesc">In the settings page, the admin can customize
+                        interface preferences.</p>
                 </div>
 
                 <div class="card">
-                    <h3><i class="fa-solid fa-house"></i>&nbsp;&nbsp; Home</h3>
-                    
-                    <p class="groupText">Return to the homepage to review the instructions again at anytime.</p>
+                    <h3><i class="fa-solid fa-house"></i>&nbsp;&nbsp;<span data-i18n-key="home">Home</span></h3>
+
+                    <p class="groupText" data-i18n-key="homeDesc">Return to the homepage to review the instructions again at anytime.</p>
                 </div>
             </div>
         </div>
