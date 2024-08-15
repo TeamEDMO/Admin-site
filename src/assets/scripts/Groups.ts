@@ -89,10 +89,14 @@ async function updateGroupsDisplay() {
         const spacer2 = document.createElement('div');
         spacer2.className = "spacer";
 
-        if (group.names.length == 0)
-            usersList.innerHTML = "No are to players";
-        else
-            usersList.innerHTML = group.names.join('<br>');
+        if (group.names.length == 0) {
+            usersList.innerHTML = "There are no players";
+            LocalizationManager.setLocalisationKey(usersList, "noPlayers");
+        }
+        else {
+            LocalizationManager.removeLocalisationKey(usersList);
+            usersList.innerHTML = group.names.join('<br/>');
+        }
 
 
         groupCard.appendChild(spacer1);

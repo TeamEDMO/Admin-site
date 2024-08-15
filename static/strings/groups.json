@@ -6,5 +6,9 @@
     "search": {
         "en": "Search",
         "nl": "Zoeken"
+    },
+    "noPlayers":{
+        "en": "There are no players",
+        "nl": "Er zijn geen spelers"
     }
 }

@@ -1,3 +1,5 @@
+import { LocalizationManager } from "./Localization";
+
 // Receive data from the server
 export interface Value<T = any> {
     Value: T;
@@ -49,7 +51,7 @@ export interface GroupInfo {
 export async function fetchGroupInfo(robotName: string) {
     const data = await fetchData<GroupInfo>(relativeURLWithPort(`sessions/${robotName}`, "8080"));
 
-    return data ?? { robotID: `${robotName} (Not active)`, players: [], tasks: [], helpEnabled: false };
+    return data ?? { robotID: `${robotName} (${LocalizationManager.getString("notActive")})`, players: [], tasks: [], helpEnabled: false };
 }
 
 export async function sendGroupFeedback(robotName: string, message: string) {

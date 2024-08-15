@@ -1,5 +1,6 @@
 import { fetchGroupInfo, getQueryParam, GroupInfo, setGroupTasks, setHelpEnabled } from './API';
 import { updateHelpEntries } from './IndividualGroup_HelpEntries';
+import { LocalizationManager } from './Localization';
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');
 const userNames = document.getElementById('userNameText');
@@ -11,7 +12,7 @@ var groupInfo: GroupInfo = {
     robotID: "null",
     players: [],
     tasks: [],
-    helpEnabled: false
+    helpEnabled: false,
 };
 
 async function getGroupInfo() {
@@ -37,10 +38,12 @@ function updateGroupInformation() {
 
     if (groupInfo.players.length == 0) {
         userNames.innerHTML = "No players are here";
+        LocalizationManager.setLocalisationKey(userNames, "noPlayers");
     }
     else {
         const groupMembers = groupInfo.players.map(p => p.name).join(", ");
         userNames.innerHTML = groupMembers;
+        LocalizationManager.removeLocalisationKey(userNames);
     }
 }
 
@@ -60,11 +63,13 @@ export async function updateTasks() {
 
     const Headline = document.createElement('h2'); //Create the headline for the container 
     Headline.textContent = "Task List";
+    LocalizationManager.setLocalisationKey(Headline, "taskList");
     taskCards.push(Headline);
 
     if (tasks.length == 0) {
         const subtitle = document.createElement("h3");
         subtitle.textContent = "There are no tasks set for this session";
+        LocalizationManager.setLocalisationKey(subtitle, "noTasks");
         taskCards.push(subtitle);
     }
 
@@ -115,7 +120,7 @@ function loadHelpEnabledbutton() {
 }
 
 async function onSwitchClicked(e: Event) {
-    if (groupInfo.robotID.endsWith("(Not active)")) {
+    if (groupInfo.robotID.endsWith(")")) {
         (e.target as HTMLInputElement).checked = false;
         return;
     }
@@ -143,6 +148,11 @@ function updateHelpState(forceUpdate = false) {
         const numberOfHelp = groupInfo.players.filter(p => p.HelpRequested).length;
         helpAmount.innerHTML = `${numberOfHelp} / ${maxHelp} players need help`;
 
+        LocalizationManager.setLocalisationKey(helpAmount, "needsHelp", {
+            numberOfHelpRequests: numberOfHelp,
+            maxPlayers: maxHelp
+        });
+
         if (forceUpdate || (groupInfo.helpEnabled != lastGroupInfo.helpEnabled))
             updateHelpEntries();
 
@@ -150,13 +160,16 @@ function updateHelpState(forceUpdate = false) {
     else {
         helpList.innerHTML = '';
         helpAmount.innerHTML = '';
+        LocalizationManager.removeLocalisationKey(helpAmount);
 
         for (const p of groupInfo.players)
             p.HelpRequested = false;
     }
 }
 //#endregion
-
+await LocalizationManager.loadLocalisationBanks("/strings/common.json",
+    "/strings/individualGroups.json");
 loadHelpEnabledbutton();
-updateGroupInfo();
+await updateGroupInfo();
+
 setInterval(updateGroupInfo, 5000);

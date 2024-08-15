@@ -11,7 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body style="background-color: rgb(246, 200, 143);">
+<body>
     <%= require('html-loader!./includes/sidebar.html').default %>
         <div class="mainPanel">
             <div>
@@ -23,7 +23,7 @@
                 <div id="TaskList" class="card"></div>
                 <div class="card" >
                     <div class="settingsCard maxWidth">
-                        <h3>Display Help Button</h3>
+                        <h3 data-i18n-key="displayHelp">Display Help Button</h3>
                         <div class="toggle">
                             <label id="switch" class="switch">
                                 <input type="checkbox" />

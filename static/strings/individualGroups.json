@@ -1,0 +1,30 @@
+{
+    "displayHelp": {
+        "en": "Display Help Button",
+        "nl": "Help-knop weergeven"
+    },
+    "noPlayers": {
+        "en": "No player are here",
+        "nl": "Er zijn geen spelers hier"
+    },
+    "taskList": {
+        "en": "Task List",
+        "nl": "Takenlijst"
+    },
+    "noTasks": {
+        "en": "There are no tasks set for this session",
+        "nl": "Er zijn geen taken ingesteld voor deze sessie"
+    },
+    "notActive": {
+        "en": "Not active",
+        "nl": "Niet actief"
+    },
+    "needsHelp": {
+        "en": "{numberOfHelpRequests} / {maxPlayers} players need help",
+        "nl": "{numberOfHelpRequests} / {maxPlayers} spelers hebben hulp nodig"
+    },
+    "typePersonalizedHelp": {
+        "en": "Type personalized help here...",
+        "nl": "Typ hier uw persoonlijke hulp..."
+    }
+}
