@@ -1,7 +1,21 @@
 import { fetchData } from "./API";
 
+export interface NamedBankURI {
+    BankName: string;
+    URI: string;
+}
+
+export interface NamedBank {
+    BankName: string;
+    Bank: LocalizationBank;
+}
+export type LocalizationBank = Record<string, Record<string, string>>;
+
 export class LocalizationManager {
-    private static localisationBanks: any[] = [];
+    private static localisationBanks: LocalizationBank[] = [];
+    private static namedBanks: Record<string, LocalizationBank> = {};
+
+
     private static currentLanguage = "nl";
 
     static {
@@ -19,13 +33,49 @@ export class LocalizationManager {
 
         this.applyLocalisationToAllElements();
     }
+    public static addLocalisationBanks(...localisationBanks: NonNullable<any>[]) {
+        for (const bank of localisationBanks)
+            this.localisationBanks.push(bank);
+
+        this.applyLocalisationToAllElements();
+    }
+
+    public static async loadNamedBanks(...namedBanksURI: NamedBankURI[]) {
+        for (const namedBankURI of namedBanksURI) {
+            const bank = await fetchData(namedBankURI.URI);
+
+            if (!bank)
+                return;
+
+            this.namedBanks[namedBankURI.BankName] = bank;
+        }
+        this.applyLocalisationToAllElements();
+    }
+
+    public static  addNamedBanks(...namedBanksURI: NamedBank[]) {
+        for (const namedBank of namedBanksURI) {
+            this.namedBanks[namedBank.BankName] = namedBank.Bank;
+        }
+
+        this.applyLocalisationToAllElements();
+    }
+
+    public static clearLocalisationBanks() {
+        this.localisationBanks = [];
+        this.namedBanks = {};
+    }
+
+    public static async unloadNamedBanks(name: string) {
+        delete this.namedBanks[name];
+    }
 
     static get CurrentLanguage(): string {
         return this.currentLanguage;
     }
 
     public static getString(key: string, args: any = null) {
-        for (const bank of this.localisationBanks) {
+        const allLocalizationBanks = this.localisationBanks.concat(Object.values(this.namedBanks));
+        for (const bank of allLocalizationBanks) {
             if (!(key in bank))
                 continue;
 
@@ -40,20 +90,9 @@ export class LocalizationManager {
         const msg: string = `Can't find string with key {${key}} for language code {${this.currentLanguage}}`;
         console.log(msg);
 
-
         return "";
     }
 
-    public static addLocalisationBanks(...localisationBanks: NonNullable<any>[]) {
-        for (const bank of localisationBanks)
-            this.localisationBanks.push(bank);
-
-        this.applyLocalisationToAllElements();
-    }
-
-    public static clearLocalisationBanks() {
-        this.localisationBanks = [];
-    }
 
     private static findAllLocalizableElements() {
         return document.querySelectorAll('[data-i18n-key]');

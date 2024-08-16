@@ -71,9 +71,16 @@ export async function updateTasks() {
         subtitle.textContent = "There are no tasks set for this session";
         LocalizationManager.setLocalisationKey(subtitle, "noTasks");
         taskCards.push(subtitle);
+
+        contentDiv.replaceChildren(...taskCards);
+        return;
     }
 
-    tasks.forEach(task => {
+    let taskLocalisationBank: Record<string, NonNullable<any>> = {};
+
+    for (const task of groupInfo.tasks) {
+        taskLocalisationBank[task.key] = task.strings;
+
         // Container that hold the checkbox and Text
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('taskDiv');
@@ -83,20 +90,22 @@ export async function updateTasks() {
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.id = task.Title;
-        checkbox.checked = task.Value;
+        checkbox.id = task.key;
+        checkbox.checked = task.completed;
         checkboxdiv.appendChild(checkbox);
 
         const taskText = document.createElement('p');
-        taskText.textContent = task.Title;
+        taskText.textContent = task.strings["en"];
+        LocalizationManager.setLocalisationKey(taskText, task.key);
+
 
         taskDiv.replaceChildren(checkbox, taskText);
         taskCards.push(taskDiv);
 
         checkbox.addEventListener('change', onCheckboxStateChanged);
-    });
-
+    }
     contentDiv.replaceChildren(...taskCards);
+    LocalizationManager.addNamedBanks({ BankName: "tasks", Bank: taskLocalisationBank });
 }
 
 function onCheckboxStateChanged(event: Event) {

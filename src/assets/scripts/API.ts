@@ -38,8 +38,9 @@ export interface EDMOPlayer {
     HelpRequested: boolean;
 }
 export interface EDMOTask {
-    Title: string;
-    Value: boolean;
+    key: string;
+    strings: Record<string, string>;
+    completed: boolean;
 }
 export interface GroupInfo {
     robotID: string;
@@ -61,8 +62,8 @@ export async function sendGroupFeedback(robotName: string, message: string) {
 
 export async function setGroupTasks(robotName: string, taskname: string, value: boolean) {
     var obj = Object();
-    obj["Title"] = taskname;
-    obj["Value"] = value;
+    obj["key"] = taskname;
+    obj["completed"] = value;
 
     return await fetchData(relativeURLWithPort(`sessions/${robotName}/tasks`, "8080"), { method: "PUT", body: JSON.stringify(obj) });
 }
