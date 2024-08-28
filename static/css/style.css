@@ -69,6 +69,7 @@ h2.sidePanelText {
     display: flex;
     flex-direction: row;
     font-size: 3em;
+    justify-content: center;
 }
 
 .card {
@@ -182,7 +183,7 @@ div.wrapContainer {
 }
 
 .voteBubbleNumber {
-   color:white;
+    color: white;
 }
 .userCard{
     color: var(--baseTextColor);

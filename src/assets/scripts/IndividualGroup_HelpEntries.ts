@@ -5,7 +5,7 @@ let globalRobotID = getQueryParam('robotID');
 let helpCollection: String[] = [];
 
 export async function updateHelpEntries() {
-    const helpLines = await fetchData<string[]>('assets/help.json') ?? [];
+    const helpLines = await fetchData<string[]>('help.json') ?? [];
     //At the beginning get content from local storage
     const contentDiv = document.getElementById('HelpList');
     if (!contentDiv) {
