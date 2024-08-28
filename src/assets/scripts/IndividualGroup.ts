@@ -1,12 +1,13 @@
 import { fetchGroupInfo, getQueryParam, GroupInfo, setGroupTasks, setHelpEnabled } from './API';
 import { updateHelpEntries } from './IndividualGroup_HelpEntries';
 import { LocalizationManager } from './Localization';
+import { relativeURLWithPort } from "./API";
 const robotID = getQueryParam('robotID');
 const pageHeader = document.getElementById('pageHeader');
 const userNames = document.getElementById('userNameText');
 const helpAmount = document.getElementById("helpText");
 const helpList = document.getElementById('HelpList');
-
+const freqSlider: Slider = null!;
 var lastGroupInfo: GroupInfo;
 var groupInfo: GroupInfo = {
     robotID: "null",
@@ -26,6 +27,7 @@ async function updateGroupInfo() {
     updateGroupInformation();
     updateTasks();
     updateHelpState();
+    updateUserSettings();
 }
 
 function updateGroupInformation() {
@@ -47,6 +49,142 @@ function updateGroupInformation() {
     }
 }
 
+//User cards
+function updateUserSettings(){
+    var userComponents: Node[] = [];
+    let freqSlider = new Slider("Frequency", 0, 0, 2, 0.05);
+    
+    const contentDiv = document.getElementById('UserList');
+    if (!contentDiv) {
+        console.error('Element with ID "UserList" not found.');
+        return;
+    }
+
+    const TextHolder = document.createElement("div");
+    TextHolder.className="textHolder";
+
+    //getString
+    const text1 = document.createElement("p"); 
+    text1.textContent="Upon selecting desired user a new window will get open, where you can control the user controls";
+    LocalizationManager.setLocalisationKey(text1,"changeUserSettingsDescription")
+    //Individual user settings (Generate based on how many users are in session)
+    const text2 = document.createElement("h4");
+    text2.textContent="Change individual user settings: "
+    LocalizationManager.setLocalisationKey(text2,"changeUserSettingsHeadline")
+
+    TextHolder.replaceChildren(text2,text1);
+    userComponents.push(TextHolder);
+
+    groupInfo.players.forEach(player => {
+        const userHyperlink = document.createElement("a"); 
+        userHyperlink.href =  relativeURLWithPort(`controller/?robotID=${encodeURIComponent(groupInfo.robotID)}&overrideIndex=${encodeURIComponent(groupInfo.players.indexOf(player))}`, "8081", "http:")     //We add 1 to specify teacher connecting 
+        const playerCard = document.createElement("div");
+        playerCard.className=("userCard");
+        userHyperlink.replaceChildren(playerCard);
+
+        const memberHeadline = document.createElement("h4");
+        memberHeadline.textContent=player.name;
+        memberHeadline.style.textAlign="center";
+
+        playerCard.replaceChildren(memberHeadline);
+        userComponents.push(userHyperlink);
+        //userComponents.push(test)
+    });
+
+    // var players: string[] = ["Nat","Mat","Kieran"];
+    // players.forEach(player => {
+    //     const userHyperlink = document.createElement("a"); 
+    //     userHyperlink.href =  relativeURLWithPort(`controller/?robotID=${robotID}&overrideindex=${encodeURIComponent(player)}`, "8081", "http:")     //We add 1 to specify teacher connecting 
+    //     const playerCard = document.createElement("div");
+    //     playerCard.className=("userCard");
+    //     userHyperlink.replaceChildren(playerCard);
+
+    //     const memberHeadline = document.createElement("h4");
+    //     memberHeadline.textContent=player;
+    //     memberHeadline.style.textAlign="center";
+
+    //     playerCard.replaceChildren(memberHeadline);
+    //     userComponents.push(userHyperlink);
+    //     //userComponents.push(test)
+    // });
+    
+    contentDiv.replaceChildren(...userComponents);
+}
+
+//Sliders 
+class Slider {
+    private slider: HTMLInputElement;
+    private text: HTMLInputElement;
+    public element: HTMLElement;
+
+    private highlightInterval: any;
+
+    public constructor(title: string, value: number, min: number, max: number, step: number) {
+        const element = this.element = document.createElement("div");
+        element.style.animationDuration = "5000ms";
+
+        const header = document.createElement("h2");
+        header.innerText = title;
+        LocalizationManager.setLocalisationKey(header, title.toLowerCase());
+
+
+        element.appendChild(header);
+
+        const sliderBox = document.createElement("div");
+        sliderBox.className = "sliderbox";
+        element.appendChild(sliderBox);
+
+        const slider = this.slider = document.createElement("input");
+        slider.type = "range";
+        slider.className = "slider";
+
+        const inputDiv = document.createElement("div");
+        inputDiv.className = "textBox sliderinput";
+
+        const inputText = this.text = document.createElement("input");
+        inputText.type = "number";
+        inputText.classList.add("sliderinputText", "textBoxInput");
+        inputText.autocomplete = "off";
+        inputDiv.appendChild(inputText);
+
+        slider.min = inputText.min = min.toString();
+        slider.max = inputText.max = max.toString();
+        slider.step = inputText.step = step.toString();
+        slider.value = inputText.value = value.toString();
+
+        const onValueChanged = (e: Event) => {
+            const value = Slider.clamp((e.target as HTMLInputElement).value, min, max);
+
+            this.value = value;
+
+
+        };
+
+        slider.addEventListener("input", onValueChanged);
+        inputText.addEventListener("input", onValueChanged);
+
+        sliderBox.replaceChildren(slider, inputDiv);
+        this.element.replaceChildren(header, sliderBox);
+    }
+
+    private static clamp(value: string, min: number, max: number) {
+        try {
+            let num = Number(value);
+
+            if (isNaN(num)) {
+                return min;
+            }
+
+            return Math.max(Math.min(num, max));
+        } catch (error) {
+            return min;
+        }
+    }
+
+    set value(x: number) {
+        this.slider.value = this.text.value = x.toString();
+    }
+}
 //#region tasks
 export async function updateTasks() {
     let tasks = groupInfo.tasks;

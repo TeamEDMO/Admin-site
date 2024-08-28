@@ -21,7 +21,9 @@ body {
     margin: 0;
     overflow: hidden;
 }
-
+a{
+   text-decoration: none; 
+}
 div.mainPanel {
     background-color: var(--baseLayerColor);
     color: var(--baseTextColor);
@@ -182,7 +184,22 @@ div.wrapContainer {
 .voteBubbleNumber {
    color:white;
 }
-
+.userCard{
+    color: var(--baseTextColor);
+    background-color: var(--secondaryContentColor);
+    border-radius: 17px;
+    padding: 2%;
+}
+.userPanel{
+    width: 100%;
+    height: 100%;
+    border-radius: 17px;
+    padding: 2%;
+    border:1px solid #ccc;
+}
+.textHolder{
+    flex: 1;
+}
 
 /*Settings page stuff*/
 

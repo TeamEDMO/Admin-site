@@ -1,21 +1,21 @@
 {
-    "displayHelp": {
+    "displayHelp":{
         "en": "Display Help Button",
         "nl": "Help-knop weergeven"
     },
-    "noPlayers": {
+    "noPlayers":{
         "en": "No player are here",
         "nl": "Er zijn geen spelers hier"
     },
-    "taskList": {
+    "taskList":{
         "en": "Task List",
         "nl": "Takenlijst"
     },
-    "noTasks": {
+    "noTasks":{
         "en": "There are no tasks set for this session",
         "nl": "Er zijn geen taken ingesteld voor deze sessie"
     },
-    "notActive": {
+    "notActive":{
         "en": "Not active",
         "nl": "Niet actief"
     },
@@ -26,5 +26,17 @@
     "typePersonalizedHelp": {
         "en": "Type personalized help here...",
         "nl": "Typ hier uw persoonlijke hulp..."
+    },
+    "displayUserChange": {
+        "en": "Force user setting changes",
+        "nl": "Forceer wijzigingen in gebruikersinstellingen"
+    },
+    "changeUserSettingsHeadline": {
+        "en": "Change individual user settings: ",
+        "nl": "Individuele gebruikersinstellingen wijzigen: "
+    },
+    "changeUserSettingsDescription": {
+        "en": "Upon selecting desired user a new window will get open, where you can control the user controls",
+        "nl": "Na het selecteren van de gewenste gebruiker wordt een nieuw venster geopend waarin u de gebruikersbedieningen kunt beheren"
     }
 }

@@ -1,5 +1,4 @@
 import { LocalizationManager } from "./Localization";
-
 // Receive data from the server
 export interface Value<T = any> {
     Value: T;
@@ -82,16 +81,16 @@ export async function getSimpleModeEnabled() {
 export async function setSimpleModeEnabled(value: boolean) {
     var obj = Object();
     obj["Value"] = value;
-
     return await fetchData(relativeURLWithPort(`simpleView`, "8080"), { method: "PUT", body: JSON.stringify(obj) });
 }
-
 
 export function getQueryParam(param: string): string | null {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
-
-export function relativeURLWithPort(relativeURLFromRoot: string, port: string) {
-    return `${window.location.protocol}//${window.location.hostname}:${port}/${relativeURLFromRoot}`;
+// export function relativeURLWithPort(relativeURLFromRoot: string, port: string) {
+//     return `${window.location.protocol}//${window.location.hostname}:${port}/${relativeURLFromRoot}`;
+// }
+export function relativeURLWithPort(relativeURLFromRoot: string, port: string, protocol: string | null = window.location.protocol) {
+    return `${protocol}//${window.location.hostname}:${port}/${relativeURLFromRoot}`;
 }
