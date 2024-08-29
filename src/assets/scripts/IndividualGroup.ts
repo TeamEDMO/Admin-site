@@ -76,41 +76,45 @@ function updateUserSettings(){
     TextHolder.replaceChildren(text2,text1);
     userComponents.push(TextHolder);
 
-    // groupInfo.players.forEach(player => {
-    //     const userHyperlink = document.createElement("a"); 
-    //     userHyperlink.href =  relativeURLWithPort(`controller?robotID=${encodeURIComponent(groupInfo.robotID)}&overrideIndex=${encodeURIComponent(groupInfo.players.indexOf(player))}`, "8081", "http:")     //We add 1 to specify teacher connecting 
-    //     const playerCard = document.createElement("div");
-    //     playerCard.className=("userCard");
-    //     userHyperlink.replaceChildren(playerCard);
-
-    //     const memberHeadline = document.createElement("h4");
-    //     memberHeadline.textContent=player.name;
-    //     memberHeadline.style.textAlign="center";
-
-    //     playerCard.replaceChildren(memberHeadline);
-    //     userComponents.push(userHyperlink);
-    //     //userComponents.push(test)
-    // });
     const mainCardContainer = document.createElement("div");
     mainCardContainer.classList.add("mainContent", "wrapContainer");
-
-    var players: string[] = ["Nat","Mat","Kieran"];
-    players.forEach(player => {
+    
+    groupInfo.players.forEach(player => {
         const userHyperlink = document.createElement("a"); 
-        userHyperlink.href =  relativeURLWithPort(`controller?robotID=${robotID}&overrideindex=${encodeURIComponent(player)}`, "8081", "http:")     //We add 1 to specify teacher connecting 
+        userHyperlink.href =  relativeURLWithPort(`controller?robotID=${encodeURIComponent(groupInfo.robotID)}&overrideIndex=${encodeURIComponent(groupInfo.players.indexOf(player))}`, "8081", "http:")     
         userHyperlink.classList.add('card', "groupCard","userCard");
 
         const playerCard = document.createElement("div");
         userHyperlink.replaceChildren(playerCard);
 
         const memberHeadline = document.createElement("h4");
-        memberHeadline.textContent=player;
+        memberHeadline.textContent=player.name;
         memberHeadline.style.textAlign="center";
 
         playerCard.replaceChildren(memberHeadline);
         cardsCollections.push(userHyperlink);
-        //userComponents.push(test)
     });
+    
+   
+
+    // var players: string[] = ["Nat","Mat","Kieran"];
+    // players.forEach(player => {
+    //     const userHyperlink = document.createElement("a"); 
+    //     userHyperlink.href =  relativeURLWithPort(`controller?robotID=${robotID}&overrideindex=${encodeURIComponent(player)}`, "8081", "http:")     //We add 1 to specify teacher connecting 
+    //     userHyperlink.classList.add('card', "groupCard","userCard");
+
+    //     const playerCard = document.createElement("div");
+    //     userHyperlink.replaceChildren(playerCard);
+
+    //     const memberHeadline = document.createElement("h4");
+    //     memberHeadline.textContent=player;
+    //     memberHeadline.style.textAlign="center";
+
+    //     playerCard.replaceChildren(memberHeadline);
+    //     cardsCollections.push(userHyperlink);
+    //     //userComponents.push(test)
+    // });
+
     mainCardContainer.replaceChildren(...cardsCollections);
     userComponents.push(mainCardContainer);
     contentDiv.replaceChildren(...userComponents);
