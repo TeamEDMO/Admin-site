@@ -188,8 +188,7 @@ div.wrapContainer {
 .userCard{
     color: var(--baseTextColor);
     background-color: var(--secondaryContentColor);
-    border-radius: 17px;
-    padding: 2%;
+    flex: 1 2 auto;
 }
 .userPanel{
     width: 100%;
