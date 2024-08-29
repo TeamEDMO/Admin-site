@@ -7,7 +7,6 @@ const pageHeader = document.getElementById('pageHeader');
 const userNames = document.getElementById('userNameText');
 const helpAmount = document.getElementById("helpText");
 const helpList = document.getElementById('HelpList');
-const freqSlider: Slider = null!;
 var lastGroupInfo: GroupInfo;
 var groupInfo: GroupInfo = {
     robotID: "null",
@@ -53,7 +52,6 @@ function updateGroupInformation() {
 function updateUserSettings(){
     var userComponents: Node[] = [];
     var cardsCollections: Node[] = [];
-    let freqSlider = new Slider("Frequency", 0, 0, 2, 0.05);
     
     const contentDiv = document.getElementById('UserList');
     if (!contentDiv) {
@@ -78,7 +76,7 @@ function updateUserSettings(){
 
     const mainCardContainer = document.createElement("div");
     mainCardContainer.classList.add("mainContent", "wrapContainer");
-    
+
     groupInfo.players.forEach(player => {
         const userHyperlink = document.createElement("a"); 
         userHyperlink.href =  relativeURLWithPort(`controller?robotID=${encodeURIComponent(groupInfo.robotID)}&overrideIndex=${encodeURIComponent(groupInfo.players.indexOf(player))}`, "8081", "http:")     
@@ -95,105 +93,11 @@ function updateUserSettings(){
         cardsCollections.push(userHyperlink);
     });
     
-   
-
-    // var players: string[] = ["Nat","Mat","Kieran"];
-    // players.forEach(player => {
-    //     const userHyperlink = document.createElement("a"); 
-    //     userHyperlink.href =  relativeURLWithPort(`controller?robotID=${robotID}&overrideindex=${encodeURIComponent(player)}`, "8081", "http:")     //We add 1 to specify teacher connecting 
-    //     userHyperlink.classList.add('card', "groupCard","userCard");
-
-    //     const playerCard = document.createElement("div");
-    //     userHyperlink.replaceChildren(playerCard);
-
-    //     const memberHeadline = document.createElement("h4");
-    //     memberHeadline.textContent=player;
-    //     memberHeadline.style.textAlign="center";
-
-    //     playerCard.replaceChildren(memberHeadline);
-    //     cardsCollections.push(userHyperlink);
-    //     //userComponents.push(test)
-    // });
-
     mainCardContainer.replaceChildren(...cardsCollections);
     userComponents.push(mainCardContainer);
     contentDiv.replaceChildren(...userComponents);
 }
 
-//Sliders 
-class Slider {
-    private slider: HTMLInputElement;
-    private text: HTMLInputElement;
-    public element: HTMLElement;
-
-    private highlightInterval: any;
-
-    public constructor(title: string, value: number, min: number, max: number, step: number) {
-        const element = this.element = document.createElement("div");
-        element.style.animationDuration = "5000ms";
-
-        const header = document.createElement("h2");
-        header.innerText = title;
-        LocalizationManager.setLocalisationKey(header, title.toLowerCase());
-
-
-        element.appendChild(header);
-
-        const sliderBox = document.createElement("div");
-        sliderBox.className = "sliderbox";
-        element.appendChild(sliderBox);
-
-        const slider = this.slider = document.createElement("input");
-        slider.type = "range";
-        slider.className = "slider";
-
-        const inputDiv = document.createElement("div");
-        inputDiv.className = "textBox sliderinput";
-
-        const inputText = this.text = document.createElement("input");
-        inputText.type = "number";
-        inputText.classList.add("sliderinputText", "textBoxInput");
-        inputText.autocomplete = "off";
-        inputDiv.appendChild(inputText);
-
-        slider.min = inputText.min = min.toString();
-        slider.max = inputText.max = max.toString();
-        slider.step = inputText.step = step.toString();
-        slider.value = inputText.value = value.toString();
-
-        const onValueChanged = (e: Event) => {
-            const value = Slider.clamp((e.target as HTMLInputElement).value, min, max);
-
-            this.value = value;
-
-
-        };
-
-        slider.addEventListener("input", onValueChanged);
-        inputText.addEventListener("input", onValueChanged);
-
-        sliderBox.replaceChildren(slider, inputDiv);
-        this.element.replaceChildren(header, sliderBox);
-    }
-
-    private static clamp(value: string, min: number, max: number) {
-        try {
-            let num = Number(value);
-
-            if (isNaN(num)) {
-                return min;
-            }
-
-            return Math.max(Math.min(num, max));
-        } catch (error) {
-            return min;
-        }
-    }
-
-    set value(x: number) {
-        this.slider.value = this.text.value = x.toString();
-    }
-}
 //#region tasks
 export async function updateTasks() {
     let tasks = groupInfo.tasks;
