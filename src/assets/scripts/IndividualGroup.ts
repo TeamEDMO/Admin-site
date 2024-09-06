@@ -79,7 +79,7 @@ function updateUserSettings(){
 
     groupInfo.players.forEach(player => {
         const userHyperlink = document.createElement("a"); 
-        userHyperlink.href =  relativeURLWithPort(`controller?robotID=${encodeURIComponent(groupInfo.robotID)}&overrideIndex=${encodeURIComponent(groupInfo.players.indexOf(player))}`, "8081", "http:")     
+        userHyperlink.href =  relativeURLWithPort(`controller.html?robotID=${encodeURIComponent(groupInfo.robotID)}&overrideIndex=${encodeURIComponent(groupInfo.players.indexOf(player))}`, "8081", "http:")     
         userHyperlink.classList.add('card', "groupCard","userCard");
 
         const playerCard = document.createElement("div");
@@ -92,7 +92,7 @@ function updateUserSettings(){
         playerCard.replaceChildren(memberHeadline);
         cardsCollections.push(userHyperlink);
     });
-    
+
     mainCardContainer.replaceChildren(...cardsCollections);
     userComponents.push(mainCardContainer);
     contentDiv.replaceChildren(...userComponents);
